@@ -7,32 +7,52 @@ const Post = (props) => {
         <View style={{ marginBottom: 30 }} >
             <Divider width={1} orientation="vertical" />
             <PostHeader post={props.post} />
+            <PostImage post={props.post} />
         </View>
     )
 }
 
-const PostHeader = (props) => (
-    <View 
-        style={{
-            flexDirection: "row", 
-            justifyContent: "space-between", 
-            margin:5, 
-            alignItems:"center"}}
-    >
-        <View style={{ flexDirection:"row", alignItems:"center" }}>
-            <Image source={{ uri: props.post.profile_picture }} style={styles.story}/>
-            <Text style={{ color: "white", marginLeft: 5, fontWeight: 700 }}>
-                {props.post.user}
-            </Text>
-        </View>
+const PostHeader = (props) => {
+    return (
+        <View 
+            style={{
+                flexDirection: "row", 
+                justifyContent: "space-between", 
+                margin:5, 
+                alignItems:"center"}}
+        >
+            <View style={{ flexDirection:"row", alignItems:"center" }}>
+                <Image source={{ uri: props.post.profile_picture }} style={styles.story}/>
+                <Text style={{ color: "white", marginLeft: 5, fontWeight: 700 }}>
+                    {props.post.user}
+                </Text>
+            </View>
 
-        <View>
-            <Text style={{ color: "white", fontWeight:"900" }}>
-                ...
-            </Text>
+            <View>
+                <Text style={{ color: "white", fontWeight:"900" }}>
+                    ...
+                </Text>
+            </View>
         </View>
-    </View>
-)
+    )
+}
+
+
+const PostImage = (props) => {
+    return (
+        <View 
+            style={{
+                width: "100%",
+                height: 450
+            }}
+        >
+            <Image
+                source={{uri: props.post.imageUrl}}
+                style={{ height: "100%", resizeMode:"cover" }}
+            />
+        </View>
+    )
+}
 
 const styles = StyleSheet.create({
     story: {

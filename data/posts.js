@@ -2,7 +2,7 @@ import { USERS } from "./users";
 
 export const POSTS = [
     {
-        imageUrl:"https://i.ibb.co/182bp1y/4k.png",
+        imageUrl:"https://www.city.wakkanai.hokkaido.jp/files/00002700/00002726/18.jpg",
         user: USERS[0].user,
         likes: 7870,
         caption: "train Ride to HAHAHAAH",
@@ -19,7 +19,7 @@ export const POSTS = [
         ],
     },
     {
-        imageUrl:"https://i.ibb.co/182bp1y/4k.png",
+        imageUrl:"https://www.city.wakkanai.hokkaido.jp/files/00002700/00002726/18.jpg",
         user: USERS[1].user,
         likes: 7870,
         caption: "train Ride to HAHAHAAH",

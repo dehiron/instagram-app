@@ -1,7 +1,7 @@
  export const USERS = [
      {
         user: "Adagagi",
-        image: "https://smartlog-stat2.imgix.net/uploads/content/piece/2020/4/tgwej7/IMG_3773.jpg?w=689&h=666&auto=compress&q=35",
+        image: "https://scontent-nrt1-1.xx.fbcdn.net/v/t31.18172-8/17635383_1472108459468225_501961712479371802_o.jpg?_nc_cat=101&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=WeYJjrmJdfwAX-6K-LQ&_nc_oc=AQkZkrNxKmi9Q52b85dRs38zgBawmE7HbQNBrhL8vzre9b74oSOrB5tDMDi35Om8uCPoT2EBpNlDwcN_sWAmiDX0&_nc_ht=scontent-nrt1-1.xx&oh=00_AT_GUZEhM-jYS-zOGIixvExnfEqLhtt8GUlPAJ_1TY78Yw&oe=61FFDED7",
      },
      {
         user: "Bhgaudoa",
