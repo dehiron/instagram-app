@@ -19,7 +19,7 @@ export const POSTS = [
         ],
     },
     {
-        imageUrl:"https://www.city.wakkanai.hokkaido.jp/files/00002700/00002726/18.jpg",
+        imageUrl:"https://www.sasu-rider.com/wp-content/uploads/2018/09/hokkaido20180727-18.jpg",
         user: USERS[1].user,
         likes: 7870,
         caption: "train Ride to HAHAHAAH",
@@ -29,10 +29,10 @@ export const POSTS = [
                 user: "aaaaa",
                 comment: "WOW! this build looks fire. Super excieted to see tta fhadfa"
             },
-            {
-                user: "bbbb",
-                comment: "WOW! Looks siiiiiiiiiiick"
-            },
+            // {
+            //     user: "bbbb",
+            //     comment: "WOW! Looks siiiiiiiiiiick"
+            // },
         ],
     }
 ]
