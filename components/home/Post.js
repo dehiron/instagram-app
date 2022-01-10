@@ -13,6 +13,8 @@ const Post = (props) => {
                 <PostFooter />
                 <Likes post={props.post} />
                 <Caption post={props.post} />
+                <CommentSection post={props.post} />
+                <Comments post={props.post} />
             </View>
             
         </View>
@@ -102,6 +104,36 @@ const Caption = (props) => {
                 <Text>{" "}{props.post.caption}</Text>
             </Text>
         </View>
+    )
+}
+
+const CommentSection = (props) => {
+    return (
+        <View style={{marginTop: 5}}>
+            { !! props.post.comments.length && (
+                <Text style={{color:"gray"}}>
+                    View{props.post.comments.length > 1 ? " all" : ""} {props.post.comments.length}{" "}
+                    {props.post.comments.length > 1 ? "comments" : "comment"} 
+                </Text>
+            )}
+        </View>
+    )
+}
+
+const Comments = (props) => {
+    return (
+        <>
+            {props.post.comments.map((comment, index) => (
+                <View key={index} style={{flexDirection:"row", marginTop:5}}>
+                    <Text style={{color: "white"}}>
+                        <Text style={{fontWeight: "600"}}>
+                            {comment.user}
+                        </Text>
+                        {" "}{comment.comment}
+                    </Text>
+                </View>
+            ))}
+        </>
     )
 }
 
