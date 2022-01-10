@@ -1,17 +1,12 @@
 import React from 'react';
-import LandingScreen from './components/auth/Landing';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator} from '@react-navigation/stack';
-
-const Stack = createStackNavigator();
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+// import { View, Text } from 'react-native';
+import HomeScreen from './screens/HomeScreen';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Landing">
-        <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <HomeScreen />
+    </SafeAreaProvider>
   );
 }
