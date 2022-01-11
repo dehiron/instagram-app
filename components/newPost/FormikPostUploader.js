@@ -3,6 +3,7 @@ import { View, Text, TextInput, Image, Button} from "react-native";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Divider } from "react-native-elements";
+import validUrl from 'valid-url';
 
 const PLACEHOLDER_IMG = "https://jmva.or.jp/wp-content/uploads/2018/07/noimage.png"
 
@@ -12,14 +13,18 @@ const uploadPostSchema = Yup.object().shape({
 })
 
 
-const FormikPostUploader = () => {
+const FormikPostUploader = ( props ) => {
 
     const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDER_IMG)
 
     return (
         <Formik
             initialValues={{caption: "", imageUrl: ""}}
-            onSubmit={(values) => console.log(values)}
+            onSubmit={(values) => {
+                console.log(values)
+                console.log("submit suceeded!")
+                props.navigation.goBack()
+            }}
             validationSchema={uploadPostSchema}
             validateOnMount={true} //Shareボタンのエラー対処
         >
@@ -31,7 +36,7 @@ const FormikPostUploader = () => {
                     flexDirection: "row"
                 }}
                 >
-                    <Image source = {{ uri : thumbnailUrl ? thumbnailUrl : PLACEHOLDER_IMG }} style={{width: 100, height: 100}}/>
+                    <Image source = {{ uri : validUrl.isUri(thumbnailUrl) ? thumbnailUrl : PLACEHOLDER_IMG }} style={{width: 100, height: 100}}/>
                     <View style={{flex: 1, marginLeft: 12}}>
                         <TextInput 
                             placeholder="Write a caption..." 

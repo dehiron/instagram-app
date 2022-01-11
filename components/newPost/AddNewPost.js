@@ -4,20 +4,20 @@ import FormikPostUploader from "./FormikPostUploader";
 
 
 
-const AddNewPost = () => {
+const AddNewPost = (props) => {
     return (
         <View style={styles.container}>
-            <Header />
-            <FormikPostUploader />
+            <Header navigation={props.navigation}/>
+            <FormikPostUploader navigation={props.navigation}/>
         </View>
     )
 }
 
 
-const Header = () => {
+const Header = (props) => {
     return (
         <View style={styles.headerContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
                 <Image 
                     source={{ uri: "https://img.icons8.com/ios-glyphs/90/ffffff/back.png"}}
                     style={{ width:30, height:30 }}
