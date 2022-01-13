@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, Pressable, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TextInput, Pressable, TouchableOpacity, Alert } from "react-native";
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { auth } from "../../firebase";
+
 import { Formik } from "formik";
 import * as Yup from "yup"
 import Validator from "email-validator"
@@ -14,12 +17,36 @@ const LoginForm = (props) => {
             .min(6, "Your password has to have at least 8 characters")
     })
 
+    const onLogin = async (email, password) => {
+        try {
+            await signInWithEmailAndPassword(auth, email, password)
+                .then((result) => console.log(result))
+            console.log("Login succeeded!", email, password)
+        } catch(error) {　
+            Alert.alert(
+                "My lord ... ",
+                error.message + "\n\n ... What would you like to do next ?",
+                [
+                    {
+                        text: "OK",
+                        onPress: () => console.log("OK"),
+                        style: "cancel"
+                    },
+                    {
+                        text: "Sign Up",
+                        onPress: () => props.navigation.push("SignupScreen")
+                    }
+                ]
+            )
+        }
+    };
+
     return(
         <View style={styles.wrapper}>
             <Formik
                 initialValues={{email: "", password:""}}
                 onSubmit={(values) => {
-                    console.log(values)
+                    onLogin(values.email, values.password)
                 }}
                 validationSchema={LoginFormSchema}
                 validateOnMount={true}

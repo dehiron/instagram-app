@@ -3,6 +3,10 @@ import { View, Text, StyleSheet, TextInput, Pressable, TouchableOpacity } from "
 import { Formik } from "formik";
 import * as Yup from "yup"
 import Validator from "email-validator"
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../firebase";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+
 
 
 const SignupForm = (props) => {
@@ -15,12 +19,35 @@ const SignupForm = (props) => {
             .min(6, "Your password has to have at least 8 characters")
     })
 
+    const onSignup = async (email, username, password) => {
+        try {
+            await createUserWithEmailAndPassword(auth, email, password)
+            .then((result) => {
+
+                if(result.user) {
+
+
+                    setDoc(doc(db, 'users', result.user.uid), {
+                        user_id: result.user.uid,
+                        username: username,
+                        email: result.user.email,
+                    });
+
+            
+                }
+            })
+            console.log("it worked!", email, password)
+        } catch(error) {
+            Alert.alert(error.message)
+        }
+    };
+
     return(
         <View style={styles.wrapper}>
             <Formik
                 initialValues={{email: "", username:"", password:""}}
                 onSubmit={(values) => {
-                    console.log(values)
+                    onSignup(values.email, values.username, values.password)
                 }}
                 validationSchema={SignupFormSchema}
                 validateOnMount={true}
