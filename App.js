@@ -1,12 +1,12 @@
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AuthNavigation from './AuthNavigation';
 // import { View, Text } from 'react-native';
-import SignedInStack from './navigation';
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <SignedInStack />
+      <AuthNavigation />
     </SafeAreaProvider>
   );
 }
