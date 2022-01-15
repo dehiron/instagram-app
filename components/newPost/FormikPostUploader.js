@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, Image, Button} from "react-native";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Divider } from "react-native-elements";
 import validUrl from 'valid-url';
+import { auth, db } from "../../firebase";
+import { collection, doc,　onSnapshot, serverTimestamp, setDoc } from "firebase/firestore";
+
 
 const PLACEHOLDER_IMG = "https://jmva.or.jp/wp-content/uploads/2018/07/noimage.png"
 
@@ -16,14 +19,63 @@ const uploadPostSchema = Yup.object().shape({
 const FormikPostUploader = ( props ) => {
 
     const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDER_IMG)
+    const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null)
+
+    const getUsername = () => {
+        const user = auth.currentUser;
+
+        const unsubscribe = onSnapshot(
+            doc(db, "users", user.uid), 
+            (snapshot) => {
+                setCurrentLoggedInUser({
+                    username: snapshot.data().username,
+                    profilePicture: snapshot.data().profile_picture
+                })
+        })
+
+        return unsubscribe;
+
+    }
+
+    useEffect(() => {
+        getUsername()
+    }, [])
+
+
+    const uploadPostToFirebase = (imageUrl, caption) => {
+
+        const user = auth.currentUser;
+
+        // サブコレクションにドキュメントを入れる方法
+        // addDoc => addDoc(collection(...), {...})
+        // setDoc => setDoc(doc(...), {...}, "any id")
+        // setDoc => setDoc(doc(collection(...)), {...})
+        const unsubscribe = setDoc(
+            doc(collection(db, "users", user.uid, "posts")),
+            {
+                imageUrl: imageUrl,
+                username: currentLoggedInUser.username,
+                profile_picture: currentLoggedInUser.profilePicture,
+                owner_uid: user.uid,
+                owner_email: user.email,
+                caption: caption,
+                createAt: serverTimestamp(),
+                like: 0,
+                likes_by_users: [],
+                comments: [],
+            }
+        ).then(() => {
+            props.navigation.goBack();
+        })
+
+        return unsubscribe;
+    }
 
     return (
         <Formik
             initialValues={{caption: "", imageUrl: ""}}
             onSubmit={(values) => {
-                console.log(values)
-                console.log("submit suceeded!")
-                props.navigation.goBack()
+                uploadPostToFirebase(values.imageUrl, values.caption)
             }}
             validationSchema={uploadPostSchema}
             validateOnMount={true} //Shareボタンのエラー対処

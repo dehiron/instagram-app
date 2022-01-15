@@ -22,7 +22,7 @@ const LoginForm = (props) => {
             await signInWithEmailAndPassword(auth, email, password)
                 .then((result) => console.log(result))
             console.log("Login succeeded!", email, password)
-        } catch(error) {　
+        } catch(error) {
             Alert.alert(
                 "My lord ... ",
                 error.message + "\n\n ... What would you like to do next ?",
