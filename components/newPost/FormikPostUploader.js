@@ -60,7 +60,6 @@ const FormikPostUploader = ( props ) => {
                 owner_email: user.email,
                 caption: caption,
                 createAt: serverTimestamp(),
-                likes: 0,
                 likes_by_users: [],
                 comments: [],
             }
@@ -103,7 +102,7 @@ const FormikPostUploader = ( props ) => {
                 </View>
                 <Divider width={0.2} orientation="vertical" />
                 <TextInput
-                onChange={(e) => {setThumbnailUrl(e.nativeEvent.text)}}
+                    onChange={(e) => {setThumbnailUrl(e.nativeEvent.text)}}
                     placeholder="Enter a image Url" 
                     placeholderTextColor="gray" 
                     style={{color: "#fff", fontSize: 18}}

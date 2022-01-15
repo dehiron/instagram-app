@@ -2,15 +2,44 @@ import React from "react";
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Divider } from "react-native-elements";
 import { FontAwesome } from '@expo/vector-icons';
+import { auth, db } from "../../firebase";
+import { arrayRemove, arrayUnion, collection, doc, FieldValue, getDoc, updateDoc } from "firebase/firestore";
 
 const Post = (props) => {
+
+    const handleLike = () => {
+
+        const currentLikeStatus = !props.post.likes_by_users.includes(
+            auth.currentUser.email
+        )
+
+        const update = updateDoc(
+            doc(db, "users", props.post.owner_uid, "posts", props.post.id ),
+            {
+                likes_by_users: currentLikeStatus 
+                    ? arrayUnion(auth.currentUser.email)
+                    : arrayRemove(auth.currentUser.email)
+            }
+        ).then(() => {
+            console.log("Success")
+        }).catch((error) => {
+            console.log("Error: ", error)
+        })
+
+
+        return update;
+
+    }
+
+    
+
     return(
         <View style={{ marginBottom: 30 }} >
             <Divider width={1} orientation="vertical" />
             <PostHeader post={props.post} />
             <PostImage post={props.post} />
             <View style={{marginHorizontal: 15, marginTop:10}}>
-                <PostFooter />
+                <PostFooter post={props.post} handleLike={handleLike}/>
                 <Likes post={props.post} />
                 <Caption post={props.post} />
                 <CommentSection post={props.post} />
@@ -33,7 +62,7 @@ const PostHeader = (props) => {
             <View style={{ flexDirection:"row", alignItems:"center" }}>
                 <Image source={{ uri: props.post.profile_picture }} style={styles.story}/>
                 <Text style={{ color: "white", marginLeft: 5}}>
-                    {props.post.user}
+                    {props.post.username}
                 </Text>
             </View>
 
@@ -67,9 +96,15 @@ const PostFooter = (props) => {
     return (
         <View style={{flexDirection: "row"}}>
             <View style={styles.leftFooterionsContainer}>
-                {/* <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[0].imageUrl} /> */}
-                <TouchableOpacity>
-                    <FontAwesome name="heart-o" size={28} color="white" style={styles.footerIcon} />
+                <TouchableOpacity
+                    onPress={() => props.handleLike(props.post)}
+                >
+                    <FontAwesome 
+                        name= { props.post.likes_by_users.includes(auth.currentUser.email) ? "heart" : "heart-o"}
+                        size= {28} 
+                        color= { props.post.likes_by_users.includes(auth.currentUser.email) ? "red" : "white"}
+                        tyle= {[styles.footerIcon]} 
+                    />
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <FontAwesome name="comment-o" size={28} color="white" style={styles.footerIcon} />
@@ -91,7 +126,9 @@ const PostFooter = (props) => {
 const Likes = (props) => {
     return (
         <View style={{flexDirection:"row", marginTop:4}}>
-            <Text style={{color:"white"}}>{props.post.likes.toLocaleString("en")} likes</Text>
+            <Text style={{color:"white"}}>
+                {props.post.likes_by_users.length.toLocaleString("en")} likes
+            </Text>
         </View>
     )
 }
@@ -100,7 +137,7 @@ const Caption = (props) => {
     return (
         <View style={{marginTop: 5}}>
             <Text style={{color:"white"}}>
-                <Text style={{fontWeight: "600"}}>{props.post.user}</Text>
+                <Text style={{fontWeight: "600"}}>{props.post.username}</Text>
                 <Text>{" "}{props.post.caption}</Text>
             </Text>
         </View>

@@ -18,7 +18,10 @@ const HomeScreen = (props) => {
         onSnapshot(
             collectionGroup(db, "posts"), 
             (snapshot) => {
-                setPosts(snapshot.docs.map(doc => doc.data()))  
+                setPosts(snapshot.docs.map(post => ({
+                    id: post.id,
+                    ...post.data()
+                })))  
             })
                         
     },[])
