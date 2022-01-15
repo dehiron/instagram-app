@@ -1,5 +1,5 @@
 import { collectionGroup, onSnapshot } from 'firebase/firestore';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomTabs, { bottomTabIcons } from '../components/home/BottomTabs';
@@ -11,22 +11,34 @@ import { db } from '../firebase';
 
 const HomeScreen = (props) => {
 
+    const [posts, setPosts] = useState([])
+
     useEffect(() => {
 
         onSnapshot(
             collectionGroup(db, "posts"), 
             (snapshot) => {
-                console.log(snapshot.docs.map(doc => doc.data()))  
+                setPosts(snapshot.docs.map(doc => doc.data()))  
             })
                         
     },[])
 
+    if (!posts) {
+        return (
+            <SafeAreaView style = {styles.container} >
+                <Header navigation = {props.navigation} />
+                <ScrollView>
+                    
+                </ScrollView>
+            </SafeAreaView>
+        )
+    }
     return(
         <SafeAreaView style = {styles.container} >
             <Header navigation = {props.navigation} />
             <Stories />
             <ScrollView>
-                {POSTS.map((post, index) => (
+                {posts.map((post, index) => (
                     <Post post={post} key={index}/>
                 ))}
             </ScrollView>

@@ -60,7 +60,7 @@ const FormikPostUploader = ( props ) => {
                 owner_email: user.email,
                 caption: caption,
                 createAt: serverTimestamp(),
-                like: 0,
+                likes: 0,
                 likes_by_users: [],
                 comments: [],
             }
